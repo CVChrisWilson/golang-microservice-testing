@@ -1,22 +1,27 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"net/http"
+    "encoding/json"
+    "fmt"
+    "net/http"
 )
 
 type Payload struct {
-	Stuff Data
+    Portfolios Data
 }
 
 type Data struct {
-	Fruit   Fruits
-	Veggies Vegetables
+    Portfolio Portfolios
 }
 
-type Fruits map[string]int
-type Vegetables map[string]int
+type Portfolios struct {
+    PortfolioItem PortfolioItems
+    PortfolioTag PortfolioTags
+}
+
+type PortfolioItems map[string]int
+type PortfolioTags map[string]int
+
 
 func serveRest(w http.ResponseWriter, r *http.Request) {
 	response, err := getJsonResponse()
@@ -33,15 +38,18 @@ func main() {
 }
 
 func getJsonResponse() ([]byte, error) {
-	fruits := make(map[string]int)
-	fruits["Apples"] = 25
-	fruits["Oranges"] = 11
+	portfolioitems:= make(map[string]int)
+	portfolioitems["SomeProject"] = 0
+	portfolioitems["SomeOtherProject"] = 1
+    portfolioitems["AnotherProject"] = 2
 
-	vegetables := make(map[string]int)
-	vegetables["Carrots"] = 21
-	vegetables["Peppers"] = 0
+	portfoliotags := make(map[string]int)
+	portfoliotags["C++"] = 21
+	portfoliotags["Java"] = 0
+    portfoliotags["Copyright Law"] = 62
 
-	d := Data{fruits, vegetables}
+	portfolios := Portfolios{portfolioitems, portfoliotags}
+    d := Data{portfolios}
 	p := Payload{d}
 
 	return json.MarshalIndent(p, "", "  ")
