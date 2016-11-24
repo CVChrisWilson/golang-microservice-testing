@@ -22,7 +22,6 @@ type Portfolios struct {
 type PortfolioItems map[string]int
 type PortfolioTags map[string]int
 
-
 func serveRest(w http.ResponseWriter, r *http.Request) {
 	response, err := getJsonResponse()
 	if err != nil {
